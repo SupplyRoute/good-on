@@ -153,6 +153,7 @@ const initColorLoop = async () => {
   const stage = colorLoop.querySelector('[data-loop-stage]');
   const itemsRoot = colorLoop.querySelector('[data-loop-items]');
   const navRoot = colorLoop.querySelector('[data-loop-nav]');
+  const filmCard = colorLoop.querySelector('[data-loop-film]');
   const activeIndex = colorLoop.querySelector('[data-active-index]');
   const activeColor = colorLoop.querySelector('[data-active-color]');
   const colorCount = colorLoop.querySelector('[data-color-count]');
@@ -176,8 +177,10 @@ const initColorLoop = async () => {
     hoverTimer = 0;
     itemsRoot.querySelectorAll('.color-loop-shirt.is-playing').forEach((shirt) => {
       shirt.classList.remove('is-playing');
-      shirt.querySelector('.tee-film').replaceChildren();
     });
+    filmCard.classList.remove('is-visible');
+    filmCard.setAttribute('aria-hidden', 'true');
+    filmCard.replaceChildren();
   };
 
   const startFilm = (shirt, color) => {
@@ -189,9 +192,17 @@ const initColorLoop = async () => {
     iframe.loading = 'eager';
     iframe.allow = 'autoplay; encrypted-media; picture-in-picture';
     iframe.setAttribute('allowfullscreen', '');
-    shirt.querySelector('.tee-film').append(iframe);
+    iframe.tabIndex = -1;
+    iframe.addEventListener('load', () => {
+      window.setTimeout(() => {
+        if (!iframe.isConnected) return;
+        filmCard.setAttribute('aria-hidden', 'false');
+        filmCard.classList.add('is-visible');
+        status.textContent = `${color.name} 컬러 필름을 열었습니다.`;
+      }, 350);
+    }, { once: true });
+    filmCard.append(iframe);
     shirt.classList.add('is-playing');
-    status.textContent = `${color.name} 컬러 필름을 열었습니다.`;
   };
 
   const scheduleFilm = (shirt, color) => {
@@ -282,18 +293,25 @@ const initColorLoop = async () => {
       select.className = 'tee-cutout';
       select.type = 'button';
       select.setAttribute('aria-label', `${color.name} 티셔츠 선택`);
+      const detail = document.createElement('img');
+      detail.className = 'tee-detail';
+      detail.src = 'assets/tee-cutout.png';
+      detail.alt = '';
+      detail.width = 1280;
+      detail.height = 1280;
+      detail.draggable = false;
+      select.append(detail);
       select.addEventListener('click', () => {
         if (moved) return;
         if (shirt.classList.contains('is-active') && window.matchMedia('(hover: none)').matches) {
-          startFilm(shirt, color);
+          if (shirt.classList.contains('is-playing')) stopFilms();
+          else startFilm(shirt, color);
         } else {
           goTo(index);
         }
       });
 
-      const film = document.createElement('div');
-      film.className = 'tee-film';
-      shirt.append(select, film);
+      shirt.append(select);
       shirt.addEventListener('pointerenter', () => scheduleFilm(shirt, color));
       shirt.addEventListener('pointerleave', () => {
         window.clearTimeout(hoverTimer);
