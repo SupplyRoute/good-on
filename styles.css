@@ -237,6 +237,26 @@ button { cursor: pointer; }
 .submit-button:active { transform: translateY(2px); }
 .form-status { min-height: 22px; margin: 12px 0 0; color: #fff; font-size: 13px; }
 
+/* Contact — three direct channels expressed as full, icon-free color fields. */
+.contact-page-hero { display: grid; justify-items: center; padding-top: clamp(84px, 11vw, 160px); padding-bottom: clamp(68px, 9vw, 124px); text-align: center; }
+.contact-page-hero .eyebrow { color: var(--orange); }
+.contact-page-hero h1 { margin: 0; font: 400 clamp(34px, 5vw, 76px)/1 var(--font-display); letter-spacing: -.055em; }
+.contact-page-hero h1 em { color: var(--blue); font-style: normal; }
+.contact-page-lede { margin: 32px 0 0; color: var(--muted); font-size: clamp(15px, 1.4vw, 19px); line-height: 1.9; }
+.contact-links-section { padding-top: 0; background: var(--paper); }
+.contact-link-list { width: min(1180px, 100%); margin: 0 auto; border: 1px solid var(--ink); }
+.contact-link { display: grid; grid-template-columns: 100px minmax(0, 1fr) auto; align-items: center; gap: clamp(18px, 4vw, 68px); min-height: clamp(150px, 15vw, 210px); padding: clamp(28px, 4vw, 58px); color: #fff; transition: filter .2s ease, padding .25s ease; }
+.contact-link + .contact-link { border-top: 1px solid rgba(255,255,255,.55); }
+.contact-link:hover { padding-right: clamp(36px, 5.5vw, 80px); padding-left: clamp(36px, 5.5vw, 80px); filter: brightness(1.08); }
+.contact-link:active { filter: brightness(.92); }
+.contact-link-email { background: var(--blue); }
+.contact-link-sns { background: var(--orange); }
+.contact-link-store { background: var(--ink); }
+.contact-link-label { font: 500 10px/1.4 var(--font-mono); letter-spacing: .14em; }
+.contact-link strong { min-width: 0; overflow-wrap: anywhere; font-size: clamp(22px, 3.5vw, 50px); line-height: 1.15; letter-spacing: -.04em; }
+.contact-link-action { padding-bottom: 5px; border-bottom: 1px solid currentColor; font-size: 13px; font-weight: 700; white-space: nowrap; }
+.contact-page-note { margin: 24px auto 0; color: var(--muted); font-size: 12px; text-align: center; }
+
 /* Brand story — centered and spacious, with pigment color as the signature. */
 .about-page { overflow: hidden; }
 .about-hero { display: grid; justify-items: center; min-height: calc(100svh - 150px); align-content: center; text-align: center; }
@@ -352,6 +372,10 @@ button { cursor: pointer; }
   .blog-post-nav { grid-template-columns: 1fr; }
   .blog-post-nav .blog-next { text-align: left; }
   .contact { gap: 64px; }
+  .contact-page-hero h1 { font-size: clamp(34px, 9.5vw, 48px); }
+  .contact-link { grid-template-columns: 1fr; justify-items: center; gap: 18px; min-height: 190px; padding: 34px 20px; text-align: center; }
+  .contact-link:hover { padding: 34px 20px; }
+  .contact-link strong { font-size: clamp(22px, 7vw, 34px); }
   .about-hero { min-height: calc(100svh - 98px); }
   .about-logo { font-size: clamp(36px, 12vw, 58px); }
   .about-image { width: 100%; }
