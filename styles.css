@@ -199,6 +199,8 @@ button { cursor: pointer; }
 .blog-post-body ul { margin: 0 0 1.8em; padding-left: 1.35em; }
 .blog-post-body li { margin-bottom: .55em; }
 .blog-post-body li::marker { color: var(--orange); }
+.blog-inline-link { color: var(--blue); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.blog-inline-link:hover { color: var(--orange); }
 .blog-faq { margin-top: 68px; }
 .blog-faq h2 { margin: 0 0 18px; font-size: 21px; }
 .blog-faq details { padding: 18px 0; border-top: 1px solid var(--line); }

@@ -75,6 +75,26 @@
       if (isNaN(date)) return String(value || '');
       return new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(date);
     }
+    function appendInline(parent, source) {
+      var text = String(source || '');
+      var pattern = /\[([^\]]+)\]\(([^)]+)\)/g;
+      var cursor = 0;
+      var match;
+      while ((match = pattern.exec(text))) {
+        parent.appendChild(document.createTextNode(text.slice(cursor, match.index)));
+        var href = match[2].trim();
+        if (/^(?:https:\/\/|\.\.?\/|[a-z0-9][a-z0-9._/-]*\.html(?:[?#].*)?$)/i.test(href)) {
+          var link = el('a', 'blog-inline-link', match[1]);
+          link.href = href;
+          if (/^https:\/\//i.test(href)) { link.target = '_blank'; link.rel = 'noopener noreferrer'; }
+          parent.appendChild(link);
+        } else {
+          parent.appendChild(document.createTextNode(match[0]));
+        }
+        cursor = pattern.lastIndex;
+      }
+      parent.appendChild(document.createTextNode(text.slice(cursor)));
+    }
     function renderBody(source) {
       var box = el('div', 'blog-post-body');
       String(source || '').replace(/\r\n/g, '\n').split(/\n\s*\n/).forEach(function (block) {
@@ -83,12 +103,18 @@
         var lines = block.split('\n');
         if (lines.every(function (line) { return /^- /.test(line.trim()); })) {
           var list = el('ul');
-          lines.forEach(function (line) { list.appendChild(el('li', null, line.trim().slice(2))); });
+          lines.forEach(function (line) {
+            var item = el('li');
+            appendInline(item, line.trim().slice(2));
+            list.appendChild(item);
+          });
           box.appendChild(list);
         } else if (/^## /.test(block)) {
           box.appendChild(el('h2', null, block.slice(3).trim()));
         } else {
-          box.appendChild(el('p', null, block));
+          var paragraph = el('p');
+          appendInline(paragraph, block);
+          box.appendChild(paragraph);
         }
       });
       return box;
