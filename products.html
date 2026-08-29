@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Good on 피그먼트 다잉 반팔, 긴팔, 헤비코튼 저지 컬렉션을 만나보세요.">
+  <meta name="theme-color" content="#f7f4ed">
+  <title>제품 — Good on</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">본문 바로가기</a>
+
+  <div class="announcement" aria-label="안내">
+    <p>GOOD COLOR, GOOD DAY <span aria-hidden="true">✦</span> 7만원 이상 무료배송</p>
+  </div>
+
+  <header class="site-header" data-header>
+    <a class="brand-mark" href="index.html" aria-label="Good on 홈">
+      <span>GOOD</span><span>ON</span>
+    </a>
+
+    <nav class="desktop-nav" aria-label="주요 메뉴">
+      <a href="index.html">홈</a>
+      <a href="products.html" aria-current="page">제품</a>
+      <a href="index.html#story">이야기</a>
+      <a href="index.html#contact">연락하기</a>
+    </nav>
+
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle onclick="toggleMobileMenu()">
+      <span class="menu-label">메뉴</span>
+      <span class="menu-lines" aria-hidden="true"><i></i><i></i></span>
+    </button>
+
+    <nav class="mobile-menu" id="mobile-menu" aria-label="모바일 메뉴" data-mobile-menu hidden>
+      <a href="index.html">홈</a>
+      <a href="products.html" aria-current="page">제품</a>
+      <a href="index.html#story">이야기</a>
+      <a href="index.html#contact">연락하기</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="catalog-hero section-pad" aria-labelledby="catalog-title">
+      <div class="catalog-title-block reveal">
+        <p class="eyebrow">ALL PRODUCTS / <span data-product-count>16</span> ITEMS</p>
+        <h1 id="catalog-title">매일의 색을<br><em>고르는 곳.</em></h1>
+      </div>
+      <p class="catalog-intro reveal">반팔부터 긴팔, 헤비코튼까지. 입고 빨수록 나다운 표정을 더하는 Good on의 저지를 한자리에서 만나보세요.</p>
+    </section>
+
+    <section class="catalog section-pad" aria-labelledby="catalog-list-title">
+      <div class="catalog-bar">
+        <h2 id="catalog-list-title">전체 제품</h2>
+        <p><span data-product-count>16</span>개의 제품</p>
+      </div>
+      <div class="product-grid catalog-grid" data-products data-product-source="products.json" aria-live="polite" aria-busy="true">
+        <p class="product-loading">제품을 불러오는 중입니다.</p>
+      </div>
+      <noscript><p class="product-error">제품을 보려면 브라우저에서 JavaScript를 켜주세요.</p></noscript>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-logo" aria-label="Good on">GOOD<br>ON</div>
+    <div class="footer-meta">
+      <p>GOOD COLOR.<br>GOOD TEXTURE.<br>GOOD EVERYDAY.</p>
+      <p>서울특별시 성동구<br>성수이로 00길 00<br><a href="mailto:hello@good-on.kr">hello@good-on.kr</a></p>
+    </div>
+    <p class="copyright">© <span data-year></span> GOOD ON. ALL RIGHTS RESERVED.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
