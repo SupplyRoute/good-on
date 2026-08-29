@@ -14,8 +14,9 @@ python -m http.server 8000
 
 ## 파일
 
-- `index.html` — 홈, 제품, 이야기, 연락하기 섹션
+- `index.html` — 홈, 대표 제품, 이야기, 연락하기 섹션
 - `products.html` — 전체 제품 카탈로그
+- `about.html` — 브랜드 역사와 피그먼트 다잉 공정 소개
 - `products.json` — 제품명, 가격, 이미지, 구매 링크의 단일 데이터 원본
 - `styles.css` — 반응형 스타일과 디자인 토큰
 - `script.js` — 모바일 메뉴, 스크롤 효과, 문의 폼 검증
