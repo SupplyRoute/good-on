@@ -3,15 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="">
+  <meta name="description" content="Good on의 피그먼트 다잉, 티셔츠 봉제와 코튼 소재에 관한 이야기를 읽어보세요.">
   <meta name="author" content="">
   <meta name="theme-color" content="#f7f4ed">
-  <link rel="canonical" href="">
+  <link rel="canonical" href="https://good-on-wj3j.vercel.app/story/post.html">
+  <link rel="describedby" href="https://good-on-wj3j.vercel.app/llms.txt">
   <meta property="og:type" content="article">
   <meta property="og:title" content="">
   <meta property="og:description" content="">
   <meta property="og:url" content="">
-  <title>이야기 — Good on</title>
+  <title>Good on 티셔츠 이야기 | 피그먼트 다잉과 소재 가이드</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -128,16 +129,18 @@
       var node = document.querySelector(selector);
       if (node) node.setAttribute(attribute, value);
     }
-    function addStructuredData(value) {
-      var script = document.createElement('script');
+    function addStructuredData(value, id) {
+      var script = id ? document.getElementById(id) : null;
+      if (!script) script = document.createElement('script');
       script.type = 'application/ld+json';
+      if (id) script.id = id;
       script.textContent = JSON.stringify(value);
-      document.head.appendChild(script);
+      if (!script.isConnected) document.head.appendChild(script);
     }
     function setMeta(post) {
       var title = String(post.title || '이야기');
       var description = String(post.description || post.summary || '').slice(0, 160);
-      var url = location.origin + location.pathname + '?id=' + encodeURIComponent(post.id || '');
+      var url = 'https://good-on-wj3j.vercel.app/story/post.html?id=' + encodeURIComponent(post.id || '');
       var author = String(post.author || '').trim();
       document.title = title + ' — Good on';
       setAttr('meta[name="description"]', 'content', description);
@@ -153,7 +156,7 @@
         keywords: Array.isArray(post.tags) ? post.tags.map(String).join(', ') : ''
       };
       if (author) article.author = { '@type': 'Person', name: author };
-      addStructuredData(article);
+      addStructuredData(article, 'blog-post-jsonld');
     }
     function notFound() {
       main.replaceChildren();
@@ -201,7 +204,20 @@
       }
       article.append(head, el('hr', 'blog-rule'), renderBody(post.body));
       var faq = Array.isArray(post.faq) ? post.faq.filter(function (item) { return item && item.q && item.a; }) : [];
-      if (faq.length) article.appendChild(renderFaq(faq));
+      if (faq.length) {
+        article.appendChild(renderFaq(faq));
+        addStructuredData({
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: faq.map(function (item) {
+            return {
+              '@type': 'Question',
+              name: String(item.q),
+              acceptedAnswer: { '@type': 'Answer', text: String(item.a) }
+            };
+          })
+        }, 'faq-jsonld');
+      }
       var older = sorted[index + 1];
       var newer = sorted[index - 1];
       if (older || newer) {

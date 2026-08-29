@@ -111,6 +111,51 @@ const createProductCard = (product) => {
   return card;
 };
 
+const syncProductStructuredData = (products) => {
+  const schema = document.getElementById('products-jsonld');
+  if (!schema) return;
+  const productList = products.map((product, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    url: product.url,
+    item: {
+      '@type': 'Product',
+      '@id': product.url,
+      name: product.name,
+      image: product.image,
+      brand: { '@type': 'Brand', '@id': 'https://good-on-wj3j.vercel.app/#brand', name: 'Good on' },
+      offers: {
+        '@type': 'Offer',
+        priceCurrency: 'KRW',
+        price: product.price,
+        url: product.url
+      }
+    }
+  }));
+
+  schema.textContent = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'CollectionPage',
+        '@id': 'https://good-on-wj3j.vercel.app/products.html#collection',
+        url: 'https://good-on-wj3j.vercel.app/products.html',
+        name: 'Good on 티셔츠 제품',
+        description: 'Good on 반팔·긴팔 티셔츠와 헤비코튼 저지 제품 목록',
+        about: { '@id': 'https://good-on-wj3j.vercel.app/#brand' },
+        mainEntity: { '@id': 'https://good-on-wj3j.vercel.app/products.html#products' }
+      },
+      {
+        '@type': 'ItemList',
+        '@id': 'https://good-on-wj3j.vercel.app/products.html#products',
+        name: 'Good on 제품 목록',
+        numberOfItems: products.length,
+        itemListElement: productList
+      }
+    ]
+  });
+};
+
 const renderProducts = async (container) => {
   const source = container.dataset.productSource || 'products.json';
   const limit = Number.parseInt(container.dataset.limit || '', 10);
@@ -132,6 +177,7 @@ const renderProducts = async (container) => {
     document.querySelectorAll('[data-product-count]').forEach((item) => {
       item.textContent = products.length;
     });
+    if (container.dataset.productSchema === 'true') syncProductStructuredData(products);
     observeReveals(container);
   } catch (error) {
     const message = document.createElement('p');

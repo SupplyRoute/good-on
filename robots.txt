@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /story/admin.html
+
+Sitemap: https://good-on-wj3j.vercel.app/sitemap.xml

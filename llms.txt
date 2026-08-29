@@ -1,0 +1,27 @@
+# Good on
+
+> Good on의 한국어 브랜드·제품 안내 사이트입니다. 피그먼트 다잉 티셔츠를 중심으로 반팔, 긴팔, 헤비코튼 저지와 맨투맨 제품을 소개합니다.
+
+Good on은 1997년부터 데일리 웨어를 만들어온 브랜드입니다. 미국산 코튼을 활용한 저지, 반복 세탁을 고려한 봉제, 일본 장인의 피그먼트 다잉을 주요 특징으로 소개합니다. 이 사이트의 제품 구매 링크는 Supply Route의 판매 페이지로 연결됩니다.
+
+제품명, 가격, 이미지와 구매 링크는 `products.json`을 기준으로 표시됩니다. 블로그 글과 FAQ는 `story/posts.json`을 기준으로 표시됩니다. 확인되지 않은 리뷰, 별점, 재고, 효능 정보는 제공하지 않습니다.
+
+## 주요 페이지
+
+- [홈](https://good-on-wj3j.vercel.app/): 대표 제품, 피그먼트 컬러와 최신 이야기를 소개합니다.
+- [제품](https://good-on-wj3j.vercel.app/products.html): Good on 반팔·긴팔·헤비코튼 제품 목록과 가격, 구매 링크를 제공합니다.
+- [브랜드 소개](https://good-on-wj3j.vercel.app/about.html): 브랜드의 시작, 코튼, 봉제와 피그먼트 다잉 방식을 설명합니다.
+- [이야기](https://good-on-wj3j.vercel.app/story/): 피그먼트 다잉, 티셔츠 봉제와 USA 코튼에 관한 글을 제공합니다.
+- [연락하기](https://good-on-wj3j.vercel.app/contact.html): 이메일, SNS와 공식 스토어 링크를 안내합니다.
+
+## 구조화된 원본 데이터
+
+- [제품 데이터](https://good-on-wj3j.vercel.app/products.json): 화면에 표시되는 제품명, 가격, 이미지와 구매 URL의 원본입니다.
+- [블로그 데이터](https://good-on-wj3j.vercel.app/story/posts.json): 글 제목, 날짜, 요약, 본문, 작성자와 FAQ의 원본입니다.
+- [사이트맵](https://good-on-wj3j.vercel.app/sitemap.xml): 검색 가능한 공개 페이지 목록입니다.
+
+## 공식 연락처
+
+- [이메일](mailto:support@supplyroute.co.kr): support@supplyroute.co.kr
+- [SNS](https://www.instagram.com/supplyroute/): @supplyroute
+- [Supply Route 스토어](https://supplyroute.co.kr/): 제품 구매와 판매 정보

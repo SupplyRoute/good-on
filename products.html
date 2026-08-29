@@ -3,13 +3,26 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Good on 피그먼트 다잉 반팔, 긴팔, 헤비코튼 저지 컬렉션을 만나보세요.">
+  <meta name="description" content="Good on 피그먼트 다잉 반팔·긴팔 티셔츠와 헤비코튼 저지, 맨투맨 제품의 이미지, 가격과 Supply Route 구매 링크를 확인하세요.">
   <meta name="theme-color" content="#f7f4ed">
-  <title>제품 — Good on</title>
+  <link rel="canonical" href="https://good-on-wj3j.vercel.app/products.html">
+  <link rel="describedby" href="https://good-on-wj3j.vercel.app/llms.txt">
+  <title>Good on 티셔츠 제품 | 반팔·긴팔·헤비코튼</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <script type="application/ld+json" id="products-jsonld">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": "https://good-on-wj3j.vercel.app/products.html#collection",
+    "url": "https://good-on-wj3j.vercel.app/products.html",
+    "name": "Good on 티셔츠 제품",
+    "description": "Good on 반팔·긴팔 티셔츠와 헤비코튼 저지 제품 목록",
+    "about": { "@id": "https://good-on-wj3j.vercel.app/#brand" }
+  }
+  </script>
 </head>
 <body>
   <a class="skip-link" href="#main">본문 바로가기</a>
@@ -55,7 +68,7 @@
         <h2 id="catalog-list-title">전체 제품</h2>
         <p><span data-product-count>16</span>개의 제품</p>
       </div>
-      <div class="product-grid catalog-grid" data-products data-product-source="products.json" aria-live="polite" aria-busy="true">
+      <div class="product-grid catalog-grid" data-products data-product-source="products.json" data-product-schema="true" aria-live="polite" aria-busy="true">
         <p class="product-loading">제품을 불러오는 중입니다.</p>
       </div>
       <noscript><p class="product-error">제품을 보려면 브라우저에서 JavaScript를 켜주세요.</p></noscript>
