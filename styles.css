@@ -78,10 +78,10 @@ button { cursor: pointer; }
 .color-loop-shirt:not(.is-active) { cursor: grab; filter: saturate(.84); }
 .drag-guide { position: absolute; bottom: 58px; left: 50%; display: flex; align-items: center; gap: 12px; margin: 0; color: var(--muted); font: 500 9px/1 var(--font-mono); letter-spacing: .14em; transform: translateX(-50%); }
 .drag-guide span { width: 28px; height: 1px; background: currentColor; }
-.color-loop-meta { position: absolute; z-index: 4; bottom: 58px; left: 50%; display: grid; justify-items: center; gap: 3px; min-width: 160px; pointer-events: none; text-align: center; transform: translateX(-50%); }
+.color-loop-meta { position: absolute; z-index: 4; bottom: 96px; left: 50%; display: grid; justify-items: center; gap: 5px; min-width: 160px; pointer-events: none; text-align: center; transform: translateX(-50%); }
 .color-loop-meta p, .color-loop-meta strong, .color-loop-meta span { margin: 0; }
 .color-loop-meta p { color: var(--blue); font: 500 9px/1 var(--font-mono); letter-spacing: .1em; }
-.color-loop-meta strong { padding-bottom: 4px; border-bottom: 1px solid currentColor; font: 600 12px/1.4 var(--font-body); letter-spacing: .08em; }
+.color-loop-meta strong { padding-bottom: 5px; border-bottom: 1px solid currentColor; font: 700 clamp(17px, 1.45vw, 22px)/1.25 var(--font-body); letter-spacing: .04em; }
 .color-loop-meta > span { color: var(--muted); font-size: 9px; }
 .color-loop-nav { position: relative; z-index: 5; display: flex; justify-content: center; gap: clamp(8px, 1.4vw, 20px); overflow-x: auto; padding: 12px 4px 4px; scrollbar-gutter: stable; }
 .color-loop-nav button { display: grid; min-width: 46px; min-height: 44px; place-items: center; gap: 5px; padding: 4px 2px; border: 0; color: var(--muted); background: transparent; cursor: pointer; font: 500 8px/1 var(--font-mono); letter-spacing: .04em; }
@@ -321,7 +321,7 @@ button { cursor: pointer; }
   .color-loop { min-height: auto; padding-top: 0; }
   .color-loop-stage { height: 570px; min-height: 570px; }
   .color-loop-shirt { width: clamp(160px, 31vw, 240px); }
-  .color-loop-meta { position: relative; bottom: auto; left: auto; margin: -112px auto 0; transform: none; }
+  .color-loop-meta { position: relative; bottom: auto; left: auto; margin: -150px auto 0; transform: none; }
   .drag-guide { display: none; }
   .section-heading { display: block; }
   .section-heading > p { margin-top: 28px; }
@@ -345,7 +345,7 @@ button { cursor: pointer; }
   .color-loop-stage { height: 480px; min-height: 480px; }
   .color-loop-shirt { top: 50%; width: clamp(142px, 43vw, 196px); }
   .color-film-card { top: 50%; width: min(76vw, 310px); }
-  .color-loop-meta { margin-top: -75px; }
+  .color-loop-meta { margin-top: -118px; }
   .color-loop-nav { flex-wrap: wrap; overflow: visible; }
   .color-loop-nav button { min-width: calc((100% - 40px) / 6); }
   .section-heading h2, .story h2, .contact h2 { font-size: clamp(27px, 7.2vw, 36px); }
