@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta name="theme-color" content="#f7f4ed">
+  <link rel="canonical" href="">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="">
+  <meta property="og:description" content="">
+  <meta property="og:url" content="">
+  <title>이야기 — Good on</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body class="blog-page blog-post-page">
+  <a class="skip-link" href="#main">본문 바로가기</a>
+
+  <header class="site-header" data-header>
+    <a class="brand-mark" href="../index.html" aria-label="Good on 홈">
+      <img src="../assets/logo_blue.svg" alt="" width="332" height="219" aria-hidden="true">
+    </a>
+    <nav class="desktop-nav" aria-label="주요 메뉴">
+      <a href="../index.html">홈</a>
+      <a href="../products.html">제품</a>
+      <a href="./" aria-current="page">이야기</a>
+      <a href="../about.html">브랜드 소개</a>
+      <a href="../index.html#contact">연락하기</a>
+    </nav>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle onclick="toggleMobileMenu()">
+      <span class="menu-label">메뉴</span>
+      <span class="menu-lines" aria-hidden="true"><i></i><i></i></span>
+    </button>
+    <nav class="mobile-menu" id="mobile-menu" aria-label="모바일 메뉴" data-mobile-menu hidden>
+      <a href="../index.html">홈</a>
+      <a href="../products.html">제품</a>
+      <a href="./" aria-current="page">이야기</a>
+      <a href="../about.html">브랜드 소개</a>
+      <a href="../index.html#contact">연락하기</a>
+    </nav>
+  </header>
+
+  <main id="main" class="blog-post-main">
+    <div class="blog-post-top"><a class="blog-back" href="./">← 이야기 목록</a></div>
+    <div id="post-content" aria-live="polite" aria-busy="true">
+      <p class="blog-state">이야기를 불러오는 중입니다.</p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-logo" aria-label="Good on">GOOD<br>ON</div>
+    <div class="footer-meta">
+      <p>GOOD COLOR.<br>GOOD TEXTURE.<br>GOOD EVERYDAY.</p>
+      <p>서울특별시 성동구<br>성수이로 00길 00<br><a href="mailto:hello@good-on.kr">hello@good-on.kr</a></p>
+    </div>
+    <p class="copyright">© <span data-year></span> GOOD ON. ALL RIGHTS RESERVED.</p>
+  </footer>
+
+  <script src="../script.js"></script>
+  <script>
+  (function () {
+    var main = document.getElementById('post-content');
+    function el(tag, className, text) {
+      var node = document.createElement(tag);
+      if (className) node.className = className;
+      if (text != null) node.textContent = text;
+      return node;
+    }
+    function fmtDate(value) {
+      var date = new Date(String(value || '') + 'T00:00:00');
+      if (isNaN(date)) return String(value || '');
+      return new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(date);
+    }
+    function renderBody(source) {
+      var box = el('div', 'blog-post-body');
+      String(source || '').replace(/\r\n/g, '\n').split(/\n\s*\n/).forEach(function (block) {
+        block = block.trim();
+        if (!block) return;
+        var lines = block.split('\n');
+        if (lines.every(function (line) { return /^- /.test(line.trim()); })) {
+          var list = el('ul');
+          lines.forEach(function (line) { list.appendChild(el('li', null, line.trim().slice(2))); });
+          box.appendChild(list);
+        } else if (/^## /.test(block)) {
+          box.appendChild(el('h2', null, block.slice(3).trim()));
+        } else {
+          box.appendChild(el('p', null, block));
+        }
+      });
+      return box;
+    }
+    function hrefOf(post) {
+      var customUrl = typeof post.url === 'string' ? post.url.trim() : '';
+      if (customUrl && !/^(?:[a-z]+:)?\/\//i.test(customUrl) && !/^javascript:/i.test(customUrl)) return customUrl;
+      return 'post.html?id=' + encodeURIComponent(post.id || '');
+    }
+    function setAttr(selector, attribute, value) {
+      var node = document.querySelector(selector);
+      if (node) node.setAttribute(attribute, value);
+    }
+    function addStructuredData(value) {
+      var script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.textContent = JSON.stringify(value);
+      document.head.appendChild(script);
+    }
+    function setMeta(post) {
+      var title = String(post.title || '이야기');
+      var description = String(post.description || post.summary || '').slice(0, 160);
+      var url = location.origin + location.pathname + '?id=' + encodeURIComponent(post.id || '');
+      var author = String(post.author || '').trim();
+      document.title = title + ' — Good on';
+      setAttr('meta[name="description"]', 'content', description);
+      setAttr('meta[name="author"]', 'content', author);
+      setAttr('link[rel="canonical"]', 'href', url);
+      setAttr('meta[property="og:title"]', 'content', title);
+      setAttr('meta[property="og:description"]', 'content', description);
+      setAttr('meta[property="og:url"]', 'content', url);
+      var article = {
+        '@context': 'https://schema.org', '@type': 'BlogPosting', headline: title,
+        description: description, datePublished: String(post.date || ''),
+        dateModified: String(post.updated || post.date || ''), mainEntityOfPage: url,
+        keywords: Array.isArray(post.tags) ? post.tags.map(String).join(', ') : ''
+      };
+      if (author) article.author = { '@type': 'Person', name: author };
+      addStructuredData(article);
+    }
+    function notFound() {
+      main.replaceChildren();
+      var state = el('div', 'blog-notfound');
+      state.append(el('p', 'eyebrow', 'STORY NOT FOUND'), el('h1', null, '글을 찾을 수 없습니다.'), el('p', null, '주소가 잘못되었거나 삭제된 글일 수 있습니다.'));
+      var link = el('a', 'text-link', '이야기 목록으로 돌아가기 →');
+      link.href = './';
+      state.appendChild(link);
+      main.appendChild(state);
+      main.setAttribute('aria-busy', 'false');
+    }
+    function renderFaq(items) {
+      var section = el('section', 'blog-faq');
+      section.appendChild(el('h2', null, '자주 묻는 질문'));
+      items.forEach(function (item) {
+        var details = el('details');
+        details.append(el('summary', null, String(item.q)), el('p', null, String(item.a)));
+        section.appendChild(details);
+      });
+      return section;
+    }
+    function render(posts) {
+      var id = new URLSearchParams(location.search).get('id') || new URLSearchParams(location.search).get('slug');
+      var sorted = Array.isArray(posts) ? posts.slice().sort(function (a, b) { return String(b.date || '').localeCompare(String(a.date || '')); }) : [];
+      var index = sorted.findIndex(function (post) { return String(post.id) === id || (post.url && String(post.url).replace(/\.html$/, '') === id); });
+      if (index < 0) { notFound(); return; }
+      var post = sorted[index];
+      setMeta(post);
+      main.replaceChildren();
+      var article = el('article', 'blog-article');
+      var head = el('header', 'blog-post-head');
+      var time = el('time', null, fmtDate(post.date));
+      time.dateTime = String(post.date || '');
+      head.append(time, el('h1', null, String(post.title || '(제목 없음)')));
+      if (post.author || (post.updated && post.updated !== post.date)) {
+        var meta = el('p', 'blog-post-meta');
+        if (post.author) meta.appendChild(el('span', null, String(post.author)));
+        if (post.updated && post.updated !== post.date) meta.appendChild(el('span', null, '수정 ' + fmtDate(post.updated)));
+        head.appendChild(meta);
+      }
+      if (Array.isArray(post.tags) && post.tags.length) {
+        var tags = el('div', 'blog-tags');
+        post.tags.forEach(function (tag) { tags.appendChild(el('span', 'blog-tag', String(tag))); });
+        head.appendChild(tags);
+      }
+      article.append(head, el('hr', 'blog-rule'), renderBody(post.body));
+      var faq = Array.isArray(post.faq) ? post.faq.filter(function (item) { return item && item.q && item.a; }) : [];
+      if (faq.length) article.appendChild(renderFaq(faq));
+      var older = sorted[index + 1];
+      var newer = sorted[index - 1];
+      if (older || newer) {
+        var nav = el('nav', 'blog-post-nav');
+        nav.setAttribute('aria-label', '다른 이야기');
+        [
+          { post: older, className: 'blog-prev', label: '이전 글' },
+          { post: newer, className: 'blog-next', label: '다음 글' }
+        ].forEach(function (item) {
+          if (!item.post) { nav.appendChild(el('span')); return; }
+          var link = el('a', item.className);
+          link.href = hrefOf(item.post);
+          link.append(el('span', 'blog-post-dir', item.label), el('strong', null, String(item.post.title || '')));
+          nav.appendChild(link);
+        });
+        article.appendChild(nav);
+      }
+      main.appendChild(article);
+      main.setAttribute('aria-busy', 'false');
+    }
+    fetch('posts.json', { cache: 'no-store' })
+      .then(function (response) {
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+        return response.json();
+      })
+      .then(render)
+      .catch(notFound);
+  }());
+  </script>
+</body>
+</html>

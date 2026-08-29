@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Good on을 만드는 사람들과 오래 입는 티셔츠에 관한 이야기를 기록합니다.">
+  <meta name="theme-color" content="#f7f4ed">
+  <title>이야기 — Good on</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body class="blog-page">
+  <a class="skip-link" href="#main">본문 바로가기</a>
+
+  <header class="site-header" data-header>
+    <a class="brand-mark" href="../index.html" aria-label="Good on 홈">
+      <img src="../assets/logo_blue.svg" alt="" width="332" height="219" aria-hidden="true">
+    </a>
+    <nav class="desktop-nav" aria-label="주요 메뉴">
+      <a href="../index.html">홈</a>
+      <a href="../products.html">제품</a>
+      <a href="./" aria-current="page">이야기</a>
+      <a href="../about.html">브랜드 소개</a>
+      <a href="../index.html#contact">연락하기</a>
+    </nav>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle onclick="toggleMobileMenu()">
+      <span class="menu-label">메뉴</span>
+      <span class="menu-lines" aria-hidden="true"><i></i><i></i></span>
+    </button>
+    <nav class="mobile-menu" id="mobile-menu" aria-label="모바일 메뉴" data-mobile-menu hidden>
+      <a href="../index.html">홈</a>
+      <a href="../products.html">제품</a>
+      <a href="./" aria-current="page">이야기</a>
+      <a href="../about.html">브랜드 소개</a>
+      <a href="../index.html#contact">연락하기</a>
+    </nav>
+  </header>
+
+  <main id="main" class="blog-main">
+    <section class="blog-hero" aria-labelledby="blog-title">
+      <p class="eyebrow">GOOD ON JOURNAL</p>
+      <h1 id="blog-title">입고, 바래고,<br><em>남는 이야기.</em></h1>
+      <p>Good on을 만드는 사람들과 오래 입는 티셔츠에 관한 기록입니다.</p>
+    </section>
+    <section class="blog-list-section" aria-label="이야기 목록">
+      <div class="blog-list-heading">
+        <p>STORIES</p>
+        <a href="admin.html">글 관리</a>
+      </div>
+      <ol class="blog-list" id="list" aria-live="polite" aria-busy="true">
+        <li class="blog-state">이야기를 불러오는 중입니다.</li>
+      </ol>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-logo" aria-label="Good on">GOOD<br>ON</div>
+    <div class="footer-meta">
+      <p>GOOD COLOR.<br>GOOD TEXTURE.<br>GOOD EVERYDAY.</p>
+      <p>서울특별시 성동구<br>성수이로 00길 00<br><a href="mailto:hello@good-on.kr">hello@good-on.kr</a></p>
+    </div>
+    <p class="copyright">© <span data-year></span> GOOD ON. ALL RIGHTS RESERVED.</p>
+  </footer>
+
+  <script src="../script.js"></script>
+  <script>
+  (function () {
+    var list = document.getElementById('list');
+    function el(tag, className, text) {
+      var node = document.createElement(tag);
+      if (className) node.className = className;
+      if (text != null) node.textContent = text;
+      return node;
+    }
+    function fmtDate(value) {
+      var date = new Date(String(value || '') + 'T00:00:00');
+      if (isNaN(date)) return String(value || '');
+      return new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(date);
+    }
+    function hrefOf(post) {
+      var customUrl = typeof post.url === 'string' ? post.url.trim() : '';
+      if (customUrl && !/^(?:[a-z]+:)?\/\//i.test(customUrl) && !/^javascript:/i.test(customUrl)) return customUrl;
+      return 'post.html?id=' + encodeURIComponent(post.id || '');
+    }
+    function render(posts) {
+      var validPosts = Array.isArray(posts) ? posts.filter(function (post) {
+        return post && typeof post.id === 'string' && typeof post.title === 'string' && typeof post.date === 'string';
+      }) : [];
+      validPosts.sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
+      list.replaceChildren();
+      if (!validPosts.length) {
+        list.appendChild(el('li', 'blog-state', '아직 올라온 이야기가 없습니다.'));
+        list.setAttribute('aria-busy', 'false');
+        return;
+      }
+      validPosts.forEach(function (post, index) {
+        var item = el('li', 'blog-list-item');
+        var link = el('a', 'blog-list-link');
+        link.href = hrefOf(post);
+        var number = el('span', 'blog-list-number', String(index + 1).padStart(2, '0'));
+        number.setAttribute('aria-hidden', 'true');
+        var copy = el('div', 'blog-list-copy');
+        var time = el('time', null, fmtDate(post.date));
+        time.dateTime = post.date;
+        copy.append(time, el('h2', null, post.title));
+        if (post.summary) copy.appendChild(el('p', null, String(post.summary)));
+        var arrow = el('span', 'blog-list-arrow', '↗');
+        arrow.setAttribute('aria-hidden', 'true');
+        link.append(number, copy, arrow);
+        item.appendChild(link);
+        list.appendChild(item);
+      });
+      list.setAttribute('aria-busy', 'false');
+    }
+    fetch('posts.json', { cache: 'no-store' })
+      .then(function (response) {
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+        return response.json();
+      })
+      .then(render)
+      .catch(function () {
+        list.replaceChildren(el('li', 'blog-state blog-state-error', '글 목록을 불러오지 못했습니다. 잠시 후 새로고침해주세요.'));
+        list.setAttribute('aria-busy', 'false');
+      });
+  }());
+  </script>
+</body>
+</html>

@@ -145,6 +145,91 @@ const renderProducts = async (container) => {
 
 document.querySelectorAll('[data-products]').forEach(renderProducts);
 
+const formatStoryDate = (value) => {
+  const date = new Date(`${String(value || '')}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return String(value || '');
+  return new Intl.DateTimeFormat('ko-KR', {
+    year: 'numeric', month: '2-digit', day: '2-digit'
+  }).format(date);
+};
+
+const isStoryPost = (post) => (
+  post
+  && typeof post.id === 'string'
+  && typeof post.title === 'string'
+  && typeof post.date === 'string'
+);
+
+const storyPostHref = (post) => {
+  const customUrl = typeof post.url === 'string' ? post.url.trim() : '';
+  if (customUrl && !/^(?:[a-z]+:)?\/\//i.test(customUrl) && !/^javascript:/i.test(customUrl)) {
+    return `story/${customUrl.replace(/^\.\//, '')}`;
+  }
+  return `story/post.html?id=${encodeURIComponent(post.id)}`;
+};
+
+const createStoryCard = (post) => {
+  const card = document.createElement('article');
+  card.className = 'journal-card';
+
+  const link = document.createElement('a');
+  link.className = 'journal-card-link';
+  link.href = storyPostHref(post);
+
+  const time = document.createElement('time');
+  time.className = 'journal-date';
+  time.dateTime = post.date;
+  time.textContent = formatStoryDate(post.date);
+
+  const title = document.createElement('h3');
+  title.textContent = post.title;
+  link.append(time, title);
+
+  if (post.summary) {
+    const summary = document.createElement('p');
+    summary.textContent = String(post.summary);
+    link.append(summary);
+  }
+
+  const arrow = document.createElement('span');
+  arrow.className = 'journal-arrow';
+  arrow.setAttribute('aria-hidden', 'true');
+  arrow.textContent = '↗';
+  link.append(arrow);
+  card.append(link);
+  return card;
+};
+
+const renderStoryPosts = async (container) => {
+  const source = container.dataset.storySource || 'story/posts.json';
+  const limit = Number.parseInt(container.dataset.limit || '3', 10);
+
+  try {
+    const response = await fetch(source, { cache: 'no-store' });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const data = await response.json();
+    const posts = Array.isArray(data) ? data.filter(isStoryPost) : [];
+    posts.sort((a, b) => String(b.date).localeCompare(String(a.date)));
+    if (!posts.length) throw new Error('No valid story posts');
+
+    const fragment = document.createDocumentFragment();
+    posts.slice(0, Number.isFinite(limit) ? limit : 3).forEach((post) => {
+      fragment.append(createStoryCard(post));
+    });
+    container.replaceChildren(fragment);
+    container.setAttribute('aria-busy', 'false');
+  } catch (error) {
+    const message = document.createElement('p');
+    message.className = 'journal-error';
+    message.textContent = '이야기를 불러오지 못했습니다. 잠시 후 페이지를 새로고침해주세요.';
+    container.replaceChildren(message);
+    container.setAttribute('aria-busy', 'false');
+    console.error('Story data load failed:', error);
+  }
+};
+
+document.querySelectorAll('[data-story-posts]').forEach(renderStoryPosts);
+
 const colorLoop = document.querySelector('[data-color-loop]');
 
 const initColorLoop = async () => {

@@ -142,6 +142,80 @@ button { cursor: pointer; }
 .story-points h3 { margin: 0 0 8px; font-size: 16px; }
 .story-points p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.8; }
 
+/* Journal — the same Good on system, tuned for long-form reading. */
+.journal-preview { background: #fff; }
+.journal-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
+.journal-card { min-width: 0; }
+.journal-card + .journal-card { border-left: 1px solid var(--line); }
+.journal-card-link { display: flex; min-height: 280px; flex-direction: column; padding: 28px clamp(18px, 2.5vw, 34px); transition: color .2s ease, background .2s ease; }
+.journal-card-link:hover { color: #fff; background: var(--blue); }
+.journal-card-link:active { background: #0d3d93; }
+.journal-date { font: 500 10px/1.4 var(--font-mono); letter-spacing: .08em; }
+.journal-card h3 { margin: 38px 0 14px; font-size: clamp(19px, 1.8vw, 27px); line-height: 1.42; letter-spacing: -.025em; }
+.journal-card p { display: -webkit-box; margin: 0; overflow: hidden; color: var(--muted); font-size: 14px; line-height: 1.8; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
+.journal-card-link:hover p { color: rgba(255,255,255,.76); }
+.journal-arrow { margin-top: auto; padding-top: 28px; font: 500 15px/1 var(--font-mono); }
+.journal-loading, .journal-error { grid-column: 1 / -1; min-height: 220px; margin: 0; padding: 34px 0; color: var(--muted); font-size: 14px; }
+.journal-error { color: #9b2f1c; }
+.journal-footer { display: flex; justify-content: center; margin-top: 38px; }
+
+.blog-page { background: var(--paper); }
+.blog-main { min-height: 70svh; }
+.blog-hero { display: grid; justify-items: center; padding: clamp(86px, 11vw, 158px) 24px clamp(72px, 9vw, 126px); border-bottom: 1px solid var(--line); text-align: center; }
+.blog-hero .eyebrow { color: var(--orange); }
+.blog-hero h1 { margin: 0; font: 400 clamp(38px, 6vw, 88px)/.98 var(--font-display); letter-spacing: -.06em; }
+.blog-hero h1 em { color: var(--blue); font-style: normal; }
+.blog-hero > p:last-child { max-width: 620px; margin: 30px 0 0; color: var(--muted); font-size: 15px; line-height: 1.9; }
+.blog-list-section { width: min(1120px, calc(100% - 40px)); margin: 0 auto; padding: clamp(70px, 9vw, 124px) 0 clamp(92px, 11vw, 156px); }
+.blog-list-heading { display: flex; align-items: center; justify-content: space-between; padding-bottom: 14px; border-bottom: 1px solid var(--ink); font: 500 10px/1.4 var(--font-mono); letter-spacing: .1em; }
+.blog-list-heading p { margin: 0; }
+.blog-list-heading a { color: var(--muted); border-bottom: 1px solid transparent; }
+.blog-list-heading a:hover { color: var(--ink); border-bottom-color: currentColor; }
+.blog-list { margin: 0; padding: 0; list-style: none; }
+.blog-list-item { border-bottom: 1px solid var(--line); }
+.blog-list-link { display: grid; grid-template-columns: 62px minmax(0, 1fr) 40px; align-items: center; gap: clamp(16px, 4vw, 54px); min-height: 210px; padding: 32px 8px; transition: color .2s ease, background .2s ease, padding .2s ease; }
+.blog-list-link:hover { padding-right: 22px; padding-left: 22px; color: #fff; background: var(--blue); }
+.blog-list-number, .blog-list-copy time { font: 500 10px/1.4 var(--font-mono); letter-spacing: .08em; }
+.blog-list-copy h2 { margin: 14px 0 12px; font-size: clamp(21px, 2.4vw, 34px); line-height: 1.35; letter-spacing: -.035em; }
+.blog-list-copy p { max-width: 680px; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.8; }
+.blog-list-link:hover .blog-list-copy p { color: rgba(255,255,255,.75); }
+.blog-list-arrow { justify-self: end; font: 500 18px/1 var(--font-mono); }
+.blog-state { min-height: 240px; padding: 48px 8px; color: var(--muted); font-size: 14px; }
+.blog-state-error { color: #9b2f1c; }
+
+.blog-post-main { width: min(680px, calc(100% - 40px)); min-height: 70svh; margin: 0 auto; padding: clamp(42px, 6vw, 78px) 0 clamp(90px, 11vw, 150px); }
+.blog-post-top { padding-bottom: clamp(44px, 7vw, 82px); }
+.blog-back { display: inline-flex; padding-bottom: 5px; border-bottom: 1px solid currentColor; font-size: 13px; font-weight: 600; }
+.blog-article { padding: 0; }
+.blog-post-head time, .blog-post-meta, .blog-post-dir { color: var(--muted); font: 500 11px/1.5 var(--font-mono); letter-spacing: .06em; }
+.blog-post-head h1 { margin: 18px 0 22px; font: 600 clamp(30px, 5vw, 48px)/1.32 var(--font-body); letter-spacing: -.045em; }
+.blog-post-meta { display: flex; gap: 16px; margin: 0 0 18px; }
+.blog-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 20px; }
+.blog-tag { padding: 5px 10px; color: var(--blue); border: 1px solid rgba(22,79,180,.35); font: 500 10px/1.3 var(--font-mono); }
+.blog-rule { width: 72px; margin: 42px 0 46px; border: 0; border-top: 3px solid var(--orange); }
+.blog-post-body { font-size: 16px; line-height: 2; }
+.blog-post-body p { margin: 0 0 1.7em; white-space: pre-line; }
+.blog-post-body h2 { margin: 2.4em 0 .9em; font-size: clamp(21px, 3vw, 27px); line-height: 1.5; letter-spacing: -.025em; }
+.blog-post-body ul { margin: 0 0 1.8em; padding-left: 1.35em; }
+.blog-post-body li { margin-bottom: .55em; }
+.blog-post-body li::marker { color: var(--orange); }
+.blog-faq { margin-top: 68px; }
+.blog-faq h2 { margin: 0 0 18px; font-size: 21px; }
+.blog-faq details { padding: 18px 0; border-top: 1px solid var(--line); }
+.blog-faq details:last-child { border-bottom: 1px solid var(--line); }
+.blog-faq summary { cursor: pointer; font-size: 15px; font-weight: 700; }
+.blog-faq summary::before { color: var(--orange); content: "Q. "; }
+.blog-faq p { margin: 12px 0 0; color: var(--muted); font-size: 14px; line-height: 1.8; }
+.blog-post-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin-top: 80px; border-top: 1px solid var(--ink); background: var(--line); }
+.blog-post-nav a { display: grid; gap: 9px; min-height: 130px; align-content: center; padding: 24px; background: var(--paper); transition: color .2s ease, background .2s ease; }
+.blog-post-nav a:hover { color: #fff; background: var(--blue); }
+.blog-post-nav .blog-next { text-align: right; }
+.blog-post-nav strong { font-size: 14px; line-height: 1.6; }
+.blog-post-nav a:hover .blog-post-dir { color: rgba(255,255,255,.7); }
+.blog-notfound { padding: 70px 0 110px; text-align: center; }
+.blog-notfound h1 { margin: 0; font: 400 clamp(28px, 5vw, 42px)/1.2 var(--font-display); }
+.blog-notfound > p:not(.eyebrow) { margin: 22px 0 30px; color: var(--muted); }
+
 .contact { display: grid; grid-template-columns: 1fr .8fr; gap: clamp(60px, 10vw, 170px); color: #fff; background: var(--blue); }
 .contact .eyebrow { color: #f8d555; }
 .contact h2 { max-width: 780px; }
@@ -233,6 +307,9 @@ button { cursor: pointer; }
   .catalog-intro { max-width: 680px; }
   .catalog-grid { grid-template-columns: repeat(2, 1fr); }
   .story-grid, .contact { grid-template-columns: 1fr; }
+  .journal-grid { grid-template-columns: 1fr; }
+  .journal-card + .journal-card { border-top: 1px solid var(--line); border-left: 0; }
+  .journal-card-link { min-height: 240px; }
   .story-color-field { min-height: 520px; }
   .contact-form { max-width: 650px; }
   .craft-grid { grid-template-columns: 1fr; max-width: 720px; }
@@ -262,6 +339,16 @@ button { cursor: pointer; }
   .story-color-field { min-height: 410px; }
   .story-color-field p { font-size: clamp(34px, 11vw, 48px); }
   .story-lead { font-size: 21px; }
+  .blog-hero h1 { font-size: clamp(36px, 11vw, 52px); }
+  .blog-list-section { width: min(100% - 28px, 1120px); }
+  .blog-list-link { grid-template-columns: 38px minmax(0, 1fr) 24px; gap: 10px; min-height: 190px; padding: 26px 2px; }
+  .blog-list-link:hover { padding-right: 8px; padding-left: 8px; }
+  .blog-list-copy h2 { font-size: 21px; }
+  .blog-list-copy p { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+  .blog-post-main { width: min(100% - 32px, 680px); }
+  .blog-post-head h1 { font-size: 30px; }
+  .blog-post-nav { grid-template-columns: 1fr; }
+  .blog-post-nav .blog-next { text-align: left; }
   .contact { gap: 64px; }
   .about-hero { min-height: calc(100svh - 98px); }
   .about-logo { font-size: clamp(36px, 12vw, 58px); }
