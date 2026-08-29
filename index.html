@@ -40,26 +40,19 @@
   </header>
 
   <main id="main">
-    <section class="hero" id="home" aria-labelledby="hero-title">
-      <div class="hero-copy reveal">
-        <p class="eyebrow">HEAVYWEIGHT JERSEY / PIGMENT DYED</p>
-        <h1 id="hero-title"><span>입을수록</span><span>좋아지는 색.</span></h1>
-        <p class="hero-lede">매일 입는 티셔츠일수록 좋은 원단과 정직한 만듦새가 필요합니다. Good on은 오래 입으며 완성하는 베이직 저지를 만듭니다.</p>
-        <a class="text-link" href="products.html">대표 제품 보기 <span aria-hidden="true">↗</span></a>
+    <section class="color-loop" id="home" aria-label="Good on 피그먼트 컬러 컬렉션" data-color-loop>
+      <div class="color-loop-stage" tabindex="0" role="region" aria-label="피그먼트 티셔츠 컬러 선택. 좌우로 드래그하거나 방향키를 사용하세요." data-loop-stage>
+        <div class="color-loop-items" data-loop-items aria-live="polite" aria-busy="true">
+          <p class="color-loop-loading">컬러를 펼치는 중입니다.</p>
+        </div>
       </div>
 
-      <div class="hero-visual reveal" aria-label="다양한 피그먼트 컬러의 Good on 티셔츠">
-        <img src="assets/good-on-jersey-hero.png" alt="오렌지, 블루, 그린, 핑크, 아이보리 색상의 피그먼트 다잉 티셔츠" width="1536" height="1024">
-        <div class="hero-stamp" aria-hidden="true"><span>GOOD ON</span><small>EST. 1997</small></div>
-        <p class="image-note"><span>01</span> 색이 빠질수록<br>나만의 한 장이 됩니다.</p>
+      <div class="color-loop-meta" aria-live="polite">
+        <p class="visually-hidden"><span data-active-index>01</span> / <span data-color-count>12</span></p>
+        <strong data-active-color>슬레이트</strong>
       </div>
-
-      <div class="color-ribbon" aria-label="이번 시즌 대표 컬러">
-        <span style="--swatch:#e75f32">P.ORANGE</span>
-        <span style="--swatch:#164fb4">P.BLUE</span>
-        <span style="--swatch:#607a57">P.SAGE</span>
-        <span style="--swatch:#e7aeb1">P.PINK</span>
-      </div>
+      <div data-loop-nav hidden></div>
+      <p class="color-loop-status visually-hidden" role="status" data-loop-status></p>
     </section>
 
     <section class="products section-pad" id="products" aria-labelledby="products-title">

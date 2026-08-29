@@ -145,6 +145,228 @@ const renderProducts = async (container) => {
 
 document.querySelectorAll('[data-products]').forEach(renderProducts);
 
+const colorLoop = document.querySelector('[data-color-loop]');
+
+const initColorLoop = async () => {
+  if (!colorLoop) return;
+
+  const stage = colorLoop.querySelector('[data-loop-stage]');
+  const itemsRoot = colorLoop.querySelector('[data-loop-items]');
+  const navRoot = colorLoop.querySelector('[data-loop-nav]');
+  const activeIndex = colorLoop.querySelector('[data-active-index]');
+  const activeColor = colorLoop.querySelector('[data-active-color]');
+  const colorCount = colorLoop.querySelector('[data-color-count]');
+  const status = colorLoop.querySelector('[data-loop-status]');
+  let colors = [];
+  let position = 0;
+  let dragStartX = 0;
+  let dragStartPosition = 0;
+  let dragging = false;
+  let moved = false;
+  let hoverTimer = 0;
+
+  const normalize = (value) => ((value % colors.length) + colors.length) % colors.length;
+  const closestDistance = (index) => {
+    const raw = index - position;
+    return ((raw + colors.length / 2) % colors.length + colors.length) % colors.length - colors.length / 2;
+  };
+
+  const stopFilms = () => {
+    window.clearTimeout(hoverTimer);
+    hoverTimer = 0;
+    itemsRoot.querySelectorAll('.color-loop-shirt.is-playing').forEach((shirt) => {
+      shirt.classList.remove('is-playing');
+      shirt.querySelector('.tee-film').replaceChildren();
+    });
+  };
+
+  const startFilm = (shirt, color) => {
+    if (!shirt.classList.contains('is-active') || dragging || shirt.classList.contains('is-playing')) return;
+    stopFilms();
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://www.instagram.com/p/${encodeURIComponent(color.shortcode)}/embed/?autoplay=1&muted=1`;
+    iframe.title = `${color.name} 컬러 인스타그램 영상`;
+    iframe.loading = 'eager';
+    iframe.allow = 'autoplay; encrypted-media; picture-in-picture';
+    iframe.setAttribute('allowfullscreen', '');
+    shirt.querySelector('.tee-film').append(iframe);
+    shirt.classList.add('is-playing');
+    status.textContent = `${color.name} 컬러 필름을 열었습니다.`;
+  };
+
+  const scheduleFilm = (shirt, color) => {
+    window.clearTimeout(hoverTimer);
+    if (!shirt.classList.contains('is-active') || dragging) return;
+    hoverTimer = window.setTimeout(() => startFilm(shirt, color), 1000);
+  };
+
+  const render = () => {
+    const compact = window.matchMedia('(max-width: 580px)').matches;
+    const tablet = window.matchMedia('(max-width: 900px)').matches;
+    const radiusX = compact ? Math.min(window.innerWidth * .62, 250) : tablet ? Math.min(window.innerWidth * .5, 390) : Math.min(window.innerWidth * .37, 560);
+    const radiusY = compact ? 58 : tablet ? 72 : 94;
+    let selectedIndex = 0;
+    let selectedDistance = Number.POSITIVE_INFINITY;
+
+    itemsRoot.querySelectorAll('.color-loop-shirt').forEach((shirt, index) => {
+      const relative = closestDistance(index);
+      const angle = relative * (Math.PI * 2 / colors.length);
+      const depth = (Math.cos(angle) + 1) / 2;
+      const x = Math.sin(angle) * radiusX;
+      const y = Math.cos(angle) * radiusY + (compact ? 18 : 26);
+      const scale = (compact ? .53 : .48) + depth * (compact ? .47 : .56);
+      const tilt = Math.sin(angle) * -9;
+      const distance = Math.abs(relative);
+
+      if (distance < selectedDistance) {
+        selectedDistance = distance;
+        selectedIndex = index;
+      }
+
+      shirt.style.transform = `translate(-50%, -50%) translate3d(${x}px, ${y}px, 0) scale(${scale}) rotate(${tilt}deg)`;
+      shirt.style.opacity = String(.28 + depth * .72);
+      shirt.style.zIndex = String(Math.round(depth * 100));
+      shirt.setAttribute('aria-hidden', String(Math.abs(relative) > (compact ? 3.4 : 5.5)));
+    });
+
+    itemsRoot.querySelectorAll('.color-loop-shirt').forEach((shirt, index) => {
+      const isActive = index === selectedIndex;
+      shirt.classList.toggle('is-active', isActive);
+      shirt.querySelector('.tee-cutout').tabIndex = isActive ? 0 : -1;
+    });
+
+    navRoot.querySelectorAll('button').forEach((button, index) => {
+      button.setAttribute('aria-current', String(index === selectedIndex));
+    });
+
+    const selected = colors[selectedIndex];
+    activeIndex.textContent = String(selectedIndex + 1).padStart(2, '0');
+    activeColor.textContent = selected.name;
+  };
+
+  const goTo = (index, announce = true) => {
+    stopFilms();
+    const target = normalize(index);
+    const current = normalize(Math.round(position));
+    let delta = target - current;
+    if (delta > colors.length / 2) delta -= colors.length;
+    if (delta < -colors.length / 2) delta += colors.length;
+    position = Math.round(position) + delta;
+    render();
+    if (announce) status.textContent = `${colors[target].name} 컬러를 선택했습니다.`;
+  };
+
+  try {
+    const response = await fetch('color-stories.json', { cache: 'no-cache' });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const data = await response.json();
+    colors = Array.isArray(data) ? data.filter((color) => (
+      typeof color.name === 'string'
+      && typeof color.label === 'string'
+      && /^#[0-9a-f]{6}$/i.test(color.color)
+      && typeof color.shortcode === 'string'
+      && isSecureUrl(color.instagram)
+    )) : [];
+    if (!colors.length) throw new Error('No valid colors');
+
+    const items = document.createDocumentFragment();
+    const nav = document.createDocumentFragment();
+
+    colors.forEach((color, index) => {
+      const shirt = document.createElement('div');
+      shirt.className = 'color-loop-shirt';
+      shirt.style.setProperty('--tee-color', color.color);
+      shirt.dataset.colorIndex = String(index);
+
+      const select = document.createElement('button');
+      select.className = 'tee-cutout';
+      select.type = 'button';
+      select.setAttribute('aria-label', `${color.name} 티셔츠 선택`);
+      select.addEventListener('click', () => {
+        if (moved) return;
+        if (shirt.classList.contains('is-active') && window.matchMedia('(hover: none)').matches) {
+          startFilm(shirt, color);
+        } else {
+          goTo(index);
+        }
+      });
+
+      const film = document.createElement('div');
+      film.className = 'tee-film';
+      shirt.append(select, film);
+      shirt.addEventListener('pointerenter', () => scheduleFilm(shirt, color));
+      shirt.addEventListener('pointerleave', () => {
+        window.clearTimeout(hoverTimer);
+        if (shirt.classList.contains('is-playing')) stopFilms();
+      });
+      items.append(shirt);
+
+      const navButton = document.createElement('button');
+      navButton.type = 'button';
+      navButton.textContent = color.label;
+      navButton.style.setProperty('--swatch', color.color);
+      navButton.setAttribute('aria-label', `${color.name} 컬러 선택`);
+      navButton.addEventListener('click', () => goTo(index));
+      nav.append(navButton);
+    });
+
+    itemsRoot.replaceChildren(items);
+    navRoot.replaceChildren(nav);
+    itemsRoot.setAttribute('aria-busy', 'false');
+    colorCount.textContent = String(colors.length).padStart(2, '0');
+    render();
+
+    stage.addEventListener('pointerdown', (event) => {
+      if (event.target.closest('iframe')) return;
+      stopFilms();
+      dragging = true;
+      moved = false;
+      dragStartX = event.clientX;
+      dragStartPosition = position;
+      stage.classList.add('is-dragging');
+      stage.setPointerCapture(event.pointerId);
+    });
+
+    stage.addEventListener('pointermove', (event) => {
+      if (!dragging) return;
+      const distance = event.clientX - dragStartX;
+      moved = Math.abs(distance) > 5;
+      position = dragStartPosition - distance / (window.innerWidth < 580 ? 78 : 118);
+      render();
+    });
+
+    const finishDrag = (event) => {
+      if (!dragging) return;
+      dragging = false;
+      stage.classList.remove('is-dragging');
+      if (stage.hasPointerCapture(event.pointerId)) stage.releasePointerCapture(event.pointerId);
+      position = Math.round(position);
+      render();
+      const selected = normalize(position);
+      status.textContent = `${colors[selected].name} 컬러를 선택했습니다.`;
+      window.setTimeout(() => { moved = false; }, 0);
+    };
+
+    stage.addEventListener('pointerup', finishDrag);
+    stage.addEventListener('pointercancel', finishDrag);
+    stage.addEventListener('keydown', (event) => {
+      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+      event.preventDefault();
+      goTo(Math.round(position) + (event.key === 'ArrowRight' ? 1 : -1));
+    });
+    window.addEventListener('resize', render, { passive: true });
+  } catch (error) {
+    const message = document.createElement('p');
+    message.className = 'color-loop-loading';
+    message.textContent = '컬러 컬렉션을 불러오지 못했습니다.';
+    itemsRoot.replaceChildren(message);
+    itemsRoot.setAttribute('aria-busy', 'false');
+    console.error('Color story load failed:', error);
+  }
+};
+
+initColorLoop();
+
 const form = document.querySelector('[data-contact-form]');
 if (form) {
   const status = document.querySelector('[data-form-status]');

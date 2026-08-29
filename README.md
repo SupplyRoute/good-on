@@ -18,9 +18,11 @@ python -m http.server 8000
 - `products.html` — 전체 제품 카탈로그
 - `about.html` — 브랜드 역사와 피그먼트 다잉 공정 소개
 - `products.json` — 제품명, 가격, 이미지, 구매 링크의 단일 데이터 원본
+- `color-stories.json` — 홈 컬러 루프의 이름, 색상값, 인스타그램 링크
 - `styles.css` — 반응형 스타일과 디자인 토큰
-- `script.js` — 모바일 메뉴, 스크롤 효과, 문의 폼 검증
+- `script.js` — 컬러 루프, 모바일 메뉴, 스크롤 효과, 문의 폼 검증
 - `assets/good-on-jersey-hero.png` — 생성형 AI로 제작한 임시 제품 비주얼
+- `assets/tee-cutout.png` — 컬러 루프에 사용하는 투명 배경 티셔츠 누끼
 - `assets/logo_blue.svg` — 헤더에 사용하는 Good On 공식 로고
 - `DESIGN.md` — 브랜드 디자인 방향과 유지보수 기준
 

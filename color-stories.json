@@ -1,0 +1,14 @@
+[
+  { "name": "슬레이트", "label": "SLATE", "color": "#596166", "instagram": "https://www.instagram.com/p/DPpvOgsE7yj/", "shortcode": "DPpvOgsE7yj" },
+  { "name": "다크그린", "label": "DARK GREEN", "color": "#244737", "instagram": "https://www.instagram.com/p/DPaMr84E6eC/", "shortcode": "DPaMr84E6eC" },
+  { "name": "레드", "label": "RED", "color": "#b53636", "instagram": "https://www.instagram.com/p/DPLdtfYE8fn/", "shortcode": "DPLdtfYE8fn" },
+  { "name": "블랙", "label": "BLACK", "color": "#1b1c1a", "instagram": "https://www.instagram.com/p/DPId4wHE0Yh/", "shortcode": "DPId4wHE0Yh" },
+  { "name": "네이비", "label": "NAVY", "color": "#19365e", "instagram": "https://www.instagram.com/p/DPGMOMhE3wQ/", "shortcode": "DPGMOMhE3wQ" },
+  { "name": "말차", "label": "MATCHA", "color": "#8d9b64", "instagram": "https://www.instagram.com/p/DO-WaskEy01/", "shortcode": "DO-WaskEy01" },
+  { "name": "내추럴", "label": "NATURAL", "color": "#dfd6c1", "instagram": "https://www.instagram.com/p/DO7t7GzkxU2/", "shortcode": "DO7t7GzkxU2" },
+  { "name": "오렌지", "label": "ORANGE", "color": "#d65d2d", "instagram": "https://www.instagram.com/p/DO7pp39E_3T/", "shortcode": "DO7pp39E_3T" },
+  { "name": "퍼플", "label": "PURPLE", "color": "#67527e", "instagram": "https://www.instagram.com/p/DO0SseIk_Sn/", "shortcode": "DO0SseIk_Sn" },
+  { "name": "브라운", "label": "BROWN", "color": "#76553e", "instagram": "https://www.instagram.com/p/DOxCpsLk3Xj/", "shortcode": "DOxCpsLk3Xj" },
+  { "name": "딥 네이비", "label": "DEEP NAVY", "color": "#263c5e", "instagram": "https://www.instagram.com/p/DOxdAFHE--z/", "shortcode": "DOxdAFHE--z" },
+  { "name": "세이지", "label": "SAGE", "color": "#7f9277", "instagram": "https://www.instagram.com/p/DOng-OykxcY/", "shortcode": "DOng-OykxcY" }
+]
