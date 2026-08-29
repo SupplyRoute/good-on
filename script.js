@@ -165,6 +165,7 @@ const initColorLoop = async () => {
   let dragging = false;
   let moved = false;
   let hoverTimer = 0;
+  let dismissTimer = 0;
 
   const normalize = (value) => ((value % colors.length) + colors.length) % colors.length;
   const closestDistance = (index) => {
@@ -174,7 +175,9 @@ const initColorLoop = async () => {
 
   const stopFilms = () => {
     window.clearTimeout(hoverTimer);
+    window.clearTimeout(dismissTimer);
     hoverTimer = 0;
+    dismissTimer = 0;
     itemsRoot.querySelectorAll('.color-loop-shirt.is-playing').forEach((shirt) => {
       shirt.classList.remove('is-playing');
     });
@@ -187,18 +190,18 @@ const initColorLoop = async () => {
     if (!shirt.classList.contains('is-active') || dragging || shirt.classList.contains('is-playing')) return;
     stopFilms();
     const iframe = document.createElement('iframe');
-    iframe.src = `https://www.instagram.com/p/${encodeURIComponent(color.shortcode)}/embed/?autoplay=1&muted=1`;
+    iframe.src = `https://www.instagram.com/reel/${encodeURIComponent(color.shortcode)}/embed/?autoplay=1&muted=1`;
     iframe.title = `${color.name} 컬러 인스타그램 영상`;
     iframe.loading = 'eager';
     iframe.allow = 'autoplay; encrypted-media; picture-in-picture';
     iframe.setAttribute('allowfullscreen', '');
-    iframe.tabIndex = -1;
+    iframe.tabIndex = 0;
     iframe.addEventListener('load', () => {
       window.setTimeout(() => {
         if (!iframe.isConnected) return;
         filmCard.setAttribute('aria-hidden', 'false');
         filmCard.classList.add('is-visible');
-        status.textContent = `${color.name} 컬러 필름을 열었습니다.`;
+        status.textContent = `${color.name} 컬러 필름을 열었습니다. 영상을 클릭하면 재생됩니다.`;
       }, 350);
     }, { once: true });
     filmCard.append(iframe);
@@ -235,7 +238,7 @@ const initColorLoop = async () => {
       }
 
       shirt.style.transform = `translate(-50%, -50%) translate3d(${x}px, ${y}px, 0) scale(${scale}) rotate(${tilt}deg)`;
-      shirt.style.opacity = String(.28 + depth * .72);
+      shirt.style.opacity = '1';
       shirt.style.zIndex = String(Math.round(depth * 100));
       shirt.setAttribute('aria-hidden', String(Math.abs(relative) > (compact ? 3.4 : 5.5)));
     });
@@ -315,7 +318,9 @@ const initColorLoop = async () => {
       shirt.addEventListener('pointerenter', () => scheduleFilm(shirt, color));
       shirt.addEventListener('pointerleave', () => {
         window.clearTimeout(hoverTimer);
-        if (shirt.classList.contains('is-playing')) stopFilms();
+        if (shirt.classList.contains('is-playing')) {
+          dismissTimer = window.setTimeout(stopFilms, 220);
+        }
       });
       items.append(shirt);
 
@@ -368,9 +373,17 @@ const initColorLoop = async () => {
     stage.addEventListener('pointerup', finishDrag);
     stage.addEventListener('pointercancel', finishDrag);
     stage.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        stopFilms();
+        return;
+      }
       if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
       event.preventDefault();
       goTo(Math.round(position) + (event.key === 'ArrowRight' ? 1 : -1));
+    });
+    filmCard.addEventListener('pointerenter', () => window.clearTimeout(dismissTimer));
+    filmCard.addEventListener('pointerleave', () => {
+      dismissTimer = window.setTimeout(stopFilms, 220);
     });
     window.addEventListener('resize', render, { passive: true });
   } catch (error) {
